@@ -1,20 +1,48 @@
 
 //Main
-var r1, r2, acc;
+var r1, r2, acc, flag, operando;
 
 const Main = () => {
   //Initiating Registers
-  Console.log('Bem Vindo')
-  InitiateRegisters(2, 3);
-  sum(r1, r2);
-  print(acc);    
+  console.log('Bem Vindo PC 16 BITS PC');
+  InitiateRegisters("0001 1011 1001 1111");
+  //sum(r1, r2);
+  operation(flag, r1, r2);
+  print('r1 ' + r1);
+  print('r2 ' + r2);
+  print('flag ' + flag);    
 
 }
 
-// Methods Auxiliares
-const InitiateRegisters = (inputA , inputB) => {
-   r1 = inputA;
-   r2 = inputB;
+// Methods Auxs 
+const InitiateRegisters = (binary) => {
+   var codes = getBinary(binary);
+   
+   flag = codes[0];
+   r1 = codes[1];
+   r2 = codes[2];
+
+}
+const getBinary = (binary) => {
+  var variables = [];
+  return variables = binary.split(' ');
+}
+const operation = (operator) => {
+  switch(operator){
+    case op.SUM:
+      //sum()
+      console.log('sum');
+      break;
+    case op.SUB:
+      console.log('sub');
+      break;
+    case op.SHIFT_LEFT:
+      console.log('shift_left');
+      break;
+    case op.PRINT:
+      console.log('print');
+      break;
+  }
 }
 
 const sum = (var1, var2, accI) => {
@@ -28,11 +56,11 @@ const print = ( information ) => {
   console.log( information );
 }
 
-const types = {
-  SUM: 'SUM',
-  SUB: 'SUB',
-  SHIFT_LEFT: 'SHIFT_LEFT',
-  PRINT: 'PRINT'
+const op = {
+  SUM: '0001',
+  SUB: '0010',
+  SHIFT_LEFT: '0100',
+  PRINT: '1000'
 }
 
 
