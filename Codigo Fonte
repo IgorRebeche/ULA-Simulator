@@ -1,0 +1,39 @@
+
+//Main
+var r1, r2, acc;
+
+const Main = () => {
+  //Initiating Registers
+  Console.log('Bem Vindo')
+  InitiateRegisters(2, 3);
+  sum(r1, r2);
+  print(acc);    
+
+}
+
+// Methods Auxiliares
+const InitiateRegisters = (inputA , inputB) => {
+   r1 = inputA;
+   r2 = inputB;
+}
+
+const sum = (var1, var2, accI) => {
+  acc =  var1 + var2;
+}
+
+const sub = (var1, var2, accI) => {
+  accI =  var1 - var2;
+}
+const print = ( information ) => {
+  console.log( information );
+}
+
+const types = {
+  SUM: 'SUM',
+  SUB: 'SUB',
+  SHIFT_LEFT: 'SHIFT_LEFT',
+  PRINT: 'PRINT'
+}
+
+
+Main();
