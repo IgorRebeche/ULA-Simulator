@@ -4,6 +4,7 @@ import './App.css';
 import MainCard from './container/MainCard';
 import 'antd/dist/antd.css';
 import InputValues from './components/InputValues';
+import Fields from './components/Fields'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <div className="mainView">
         <InputValues/>
         <MainCard title="ULA Simulator">
+          <Fields/>
         </MainCard>
       </div>
     </div>
