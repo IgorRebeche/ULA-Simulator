@@ -42,15 +42,23 @@ const operation = (operator) => {
     case op.PRINT:
       console.log('print');
       break;
+      default:
+        break;
   }
 }
 
 const sum = (var1, var2, accI) => {
-  acc =  var1 + var2;
+  var x = parseInt(var1, 2);
+  var y = parseInt(var2, 2);
+  var sum = x + y;
+  acc = sum.toString(2);
 }
 
 const sub = (var1, var2, accI) => {
-  accI =  var1 - var2;
+  var x = parseInt(var1, 2);
+  var y = parseInt(var2, 2);
+  var sum = x - y;
+  acc = sum.toString(2);
 }
 const print = ( information ) => {
   console.log( information );
