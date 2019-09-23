@@ -16,28 +16,28 @@ const UlaFields = ({ R1, R2, Output, Flag, Operando }) => {
           </Col>
         }
 
-        <Col span={4}>
+        <Col md={{ span: 24}}  lg={{ span: 6}}>
           <NumberCard
             title="R1"
             base10Number={parseInt(R1, 2).toString(10)}
             base2Number={R1}
           />
         </Col>
-        <Col span={4}>
+        <Col md={{ span: 24}} lg={{ span: 6}}>
           <NumberCard
             title="R2"
             base10Number={parseInt(R2, 2).toString(10)}
             base2Number={R2}
           />
         </Col>
-        <Col span={4}>
+        <Col md={{ span: 24}} lg={{ span: 6}}>
           <NumberCard
             title="Acc"
             base10Number={parseInt(Output, 2).toString(10)}
             base2Number={Output}
           />
         </Col>
-        <Col span={4}>
+        <Col md={{ span: 24}} lg={{ span: 6}}>
           <NumberCard
             title="Flag"
             base10Number={parseInt(Flag, 2).toString(10)}

@@ -42,7 +42,7 @@ function App() {
         <MainCard title="ULA Simulator">
           {
             R1 ? 
-            <UlaFields R1 ={R1} R2 ={R2} Output ={Output} Flag ={Flag.code} Operando={Operando}/> :
+            <UlaFields R1 ={R1} R2 ={R2} Output ={Output} Flag ={Flag ? Flag.code : 0} Operando={Operando}/> :
             <p>Digite o sinal para a ULA calcular</p>
           }
           
