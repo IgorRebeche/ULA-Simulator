@@ -1,0 +1,14 @@
+.baseValue {
+    display: inline-block;
+    margin: 0px 10px 0px 10px;
+}
+
+.outputValue {
+    font-weight: bold;
+    display: block;
+}
+.outputLabelValue {
+    font-size: 11px;
+    display: block;
+    float: right;
+}
