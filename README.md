@@ -1,8 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Exercicio ULA 
 
-In the project directory, you can run:
+This app is a simulation of ULA operations. For Computer architecture class
 
 ### `npm start`
 
