@@ -7,21 +7,36 @@ class MemoriaPrincipal:
         self.HEAD = 0
         self.RESULT_HEAD = 0
         self.STACK_POINTER = 0
+        self.STACK_RESULT_POINTER = 0
         #MemoriaPrincipal Principal
         self.memoriaPrincipal = [None] * self.memorySize
     
     
     def insertBits(self, bits):
         BitsParaAlocar = bits.split(' ')
-        lastIndex =  self.STACK_POINTER
+        bitsSize = len(BitsParaAlocar) - 1
+        lastIndex =  self.STACK_POINTER if self.STACK_POINTER == 0 else self.STACK_POINTER + 1
         bitAdrress = lastIndex
         
-        for byte in BitsParaAlocar :
+        for i, byte in enumerate(BitsParaAlocar) :
+            
             self.memoriaPrincipal[lastIndex] = byte
-            lastIndex += 1
+            if i != bitsSize:
+                lastIndex += 1
         
         self.STACK_POINTER = lastIndex
         return bitAdrress
+    
+    def setResultHead(self):
+        self.RESULT_HEAD = self.STACK_POINTER
+        self.STACK_RESULT_POINTER = self.RESULT_HEAD
+    
+    def setResultValue(self, result):
+        self.STACK_RESULT_POINTER += 1
+        self.memoriaPrincipal[ self.STACK_RESULT_POINTER ] = result
+    
+    def setSTackPointer(self, index):
+        self.STACK_POINTER = index
     
     def printMemory(self):
         print(self.memoriaPrincipal)
@@ -30,12 +45,12 @@ class MemoriaPrincipal:
 class CPU:
 
     def __init__(self, memoria):
-        self.PC = 0
-        self.RI = []
         self.mem = memoria
+        self.PC = self.mem.HEAD
+        self.RI = []
         self.instruction_count = 0
         
-    def addInstruction(self, instruction, R1 = '000000000', R2 = '00000000'):
+    def addInstruction(self, instruction, R1 = 0, R2 = 0):
         
         if instruction == 'ADD':
             self.mem.insertBits(f'00000010 {R1:08b} {R2:08b}')
@@ -48,41 +63,46 @@ class CPU:
 
         if instruction == 'EXIT':
             self.mem.insertBits(f'11111111')
-            self.mem.RESULT_HEAD = self.mem.STACK_POINTER    
+            self.mem.setResultHead()    
 
     def ULA(self, binary_instruction : list):
+        
         if binary_instruction[0] == '00000010': #ADD
-            result = int(binary_instruction[1], 2) + int(binary_instruction[2], 2)
-            self.mem.memoriaPrincipal[self.mem.RESULT_HEAD ] = result
-            self.mem.RESULT_HEAD += 1
-        if binary_instruction == 'SUB': #SUB
-            pass
-        if binary_instruction == 'JUMP': #JUMP
-            pass
-    
-    def executeInstructions(s):
+            #Sum in decimal base > convert to bin > convert to int and format number to 8 digits
+            result = bin(int(binary_instruction[1], 2) + int(binary_instruction[2], 2))
+            result = f'{int(result[2:]):08}'
+            self.mem.setResultValue(result)
+        
+        if binary_instruction[0] == '00000001': #SUB
+            result = bin(int(binary_instruction[1], 2) - int(binary_instruction[2], 2))
+            result = f'{int(result[2:]):08}'
+            self.mem.setResultValue(result)
 
-        while s.mem.memoriaPrincipal[s.PC]:
+        if binary_instruction[0] == '00000100': #JUMP Takes R1 as the adress
+            JumpAdress = int(binary_instruction[1], 2)
+            self.mem.setSTackPointer(JumpAdress)
+            self.PC = JumpAdress
+    
+    def executeInstructions(self):
+
+        while self.mem.memoriaPrincipal[self.PC]:
             
-            if s.mem.memoriaPrincipal[s.PC] == '11111111':
+            #Stop Fetch Instructions
+            if self.mem.memoriaPrincipal[self.PC] == '11111111':
                 break
             
-            if len(s.RI) < 3:
-                s.RI.append(s.mem.memoriaPrincipal[s.PC])
-                s.PC += 1 #increment Program Counter
+            #If size > 3
+            if len(self.RI) < 3:
+                self.RI.append(self.mem.memoriaPrincipal[self.PC])
+                self.PC += 1 #increment Program Counter
             else:
-                s.ULA(s.RI) #EXECUTE INSTRUCTION
-                s.RI = []   #CLEAN RI    
-                s.RI.append(s.mem.memoriaPrincipal[s.PC]) #append next instruction
-                s.PC += 1 #increment Program Counter
+                self.ULA(self.RI) #EXECUTE INSTRUCTION
+                self.RI = []   #CLEAN RI    
+                self.RI.append(self.mem.memoriaPrincipal[self.PC]) #append next instruction
+                self.PC += 1 #increment Program Counter
             
-        if len(s.RI) == 3:
-                s.ULA(s.RI) #EXECUTE INSTRUCTION
-
-        # for index, value in enumerate(self.mem.memoriaPrincipal) :
-        #     if index > 3
-        #         self.PC = 0
-            
+        if len(self.RI) == 3:
+                self.ULA(self.RI) #EXECUTE INSTRUCTION
 
 class Computador():
 
@@ -96,21 +116,22 @@ class Computador():
         print('Inicializando computador...')
         print(f'MemoriaPrincipal de {memRamSize} Bytes')
 
+    def dumpProgram(self):
+        print(f'Memory Information: ')
+        print(f'Stack Pointer: {self.mem.STACK_POINTER} | HEAD: {self.mem.HEAD} | Result HEAD: {self.mem.RESULT_HEAD} | Result Stack Pointer: {self.mem.STACK_RESULT_POINTER} ')
+        print('Dumped Memory -----------------')
+        self.mem.printMemory()
     def instruction(self):
         
         #Adicionando instrucao 1
+        self.CPU.addInstruction('JUMP', 6) # Jump to third instruction
         self.CPU.addInstruction('ADD', 10, 10)
         self.CPU.addInstruction('ADD', 12, 10)
         self.CPU.addInstruction('EXIT')
-        #Adicionando instrucao 2
-        #adress = self.mem.insertBits(f'00000000 00000000 00000000 00000002')
-        
-        #print('Endereço do word', adress)
-        self.mem.printMemory()
 
     def runProgram(self):
         self.CPU.executeInstructions()
-        self.mem.printMemory()
+        
 
 # Hardware da Maquina
 computador = Computador()
@@ -120,6 +141,7 @@ computador.instruction()
 
 computador.runProgram()
 
+computador.dumpProgram()
 
 
 
