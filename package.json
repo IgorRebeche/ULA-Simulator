@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^3.23.2",
+    "antd": "^6.4.3",
     "antd-mask-input": "^0.1.12",
     "rc-animate": "^2.10.0",
     "react": "^16.9.0",
